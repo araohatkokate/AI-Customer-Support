@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { ReadableStream } from "openai/_shims";
 
 const systemprompt = `You are the customer support bot for Headstarter, an AI-powered platform designed to help candidates prepare for software engineering (SWE) jobs through AI-driven interviews. Your primary role is to assist users with various tasks related to the platform, such as setting up their profiles, navigating through the interview process, understanding how the AI assessment works, and troubleshooting any issues they might encounter.
 
@@ -18,7 +17,7 @@ export async function POST(req) {
     const openai = new OpenAI()
     const data = await req.json()
 
-    const completion = new openai.chat.completions.create({
+    const completion = await openai.chat.completions.create({
         messages : [{
             role: 'system', content: systemprompt
         },
